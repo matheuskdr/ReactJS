@@ -1,22 +1,21 @@
 "use client"
 
-import { FormEvent } from "react";
-import { CustomButton } from "./components/CustomButton";
+import { useState } from "react";
 
 const Page = () => {
+  const [showSecret, setShowSecret] = useState(false);
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    alert("Opa, mandando!")
+  const handleClickButton = () => {
+    setShowSecret(!showSecret);
   }
+
 
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center">
-      <h1 className="text-3xl mb-3">Form de login</h1>
-      <form onSubmit={handleFormSubmit}>
-        <input type="text" />
-        <input type="submit" value="Enviar" />
-      </form>
+      <button onClick={handleClickButton} className="bg-blue-500 p-3">{showSecret ? 'Ocultar' : 'Mostrar'}</button>
+      {showSecret &&
+        <div className="p-3 bg-blue-300 rounded-md mt-3">Área Secreta</div>
+      }
     </div>
   );
 }
