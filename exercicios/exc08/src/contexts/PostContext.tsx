@@ -1,5 +1,6 @@
+import { PostReducer } from "@/reducers/PostReducer";
 import { Post } from "@/types/Post";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useReducer } from "react";
 
 type PostContextType = {
     posts: Post[];
@@ -9,11 +10,10 @@ type PostContextType = {
 export const PostContext = createContext<PostContextType | null>(null);
 
 export const PostProvider = ({ children }: { children: ReactNode }) => {
-    const [posts, setPosts] = useState<Post[]>( [] );
+    const [posts, dispatch] = useReducer(PostReducer, []);
 
     const addPost = (title: string, body: string) => {
-        setPosts([ ...posts, {id: posts.length, title, body}
-        ]);
+        dispatch({ type: 'add', payload: { title, body } });
     }
 
     return (
