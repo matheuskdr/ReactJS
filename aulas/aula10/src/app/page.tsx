@@ -1,61 +1,60 @@
 "use client"
 
 import { User } from "@/types/User";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Page = () => {
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState<User[]>([]);
+  const [legendInput, setLegendInput] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const getUsers = async () => {
-    setLoading(true);
+  const handleFileSend = async () => {
+    if(fileInputRef.current?.files && fileInputRef.current.files.length > 0) {
+      const fileItem = fileInputRef.current.files[0];
+      const allowed = ['image/jpg', 'image/jpeg', 'image/png'];
 
-    try {
-      const res = await fetch('https://jsonplaceholder.typicode.com/users');
-      const json = await res.json();
-      setUsers(json);
-    } catch (err) {
-      console.log('Deu tudo errado!')
+      if(allowed.includes(fileItem.type)) {
+
+        const data = new FormData();
+        data.append('image', fileItem);
+        data.append('legend', legendInput);
+
+        const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'multipart/form-data'
+          },
+          body: data
+        });
+        const json = await res.json();
+        console.log(json);
+
+      } else {
+        alert('Arquivo incompativel!')
+      }
+
+    } else {
+      alert('Selecione um arquivo');
     }
-    setLoading(false);
-  }
-
-  useEffect(() => {
-      getUsers();
-  }, []);
-
-  const handleAddNewPost = async () => {
-    const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      },
-      body: JSON.stringify({
-        title: 'Post de teste',
-        body: 'Corpo de teste',
-        userId: 99
-      })
-    });
-    const json = await res.json();
-
-    console.log(json);
   }
 
   return (
     <div className="container mx-auto">
-      <button onClick={handleAddNewPost}>Adicionar Novo Post</button>
+      <h1 className="mt-4 text-3xl">Upload de Imagem</h1>
 
-      <h1 className="text-3xl">Lista de usuários</h1>
-
-      {loading && 'Carregando...'}
-      {!loading && users.length > 0 && 
-        <ul>
-          {users.map(item => (
-            <li key={item.id}>{item.name} - ({item.address.city})</li>
-          ))}
-        </ul>
-      }
-      {!loading && users.length === 0 && 'Não há usuários para exibir.'}
+      <div className="max-w-md flex flex-col gap-3 border border-dotted border-white p-3 m-4 mt-4">
+        <input
+          ref={fileInputRef}
+          type="file"
+        />
+        <input
+          type="text"
+          placeholder="Digite uma legenda"
+          className="p-3 bg-white rounded-md text-black"
+          value={legendInput}
+          onChange={e => setLegendInput(e.target.value)}
+        />
+        <button onClick={handleFileSend}>Enviar Imagem</button>
+      </div>
     </div>
   );
 }
