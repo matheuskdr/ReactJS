@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPost, getPosts } from "./api";
+import { postsInitiaData } from "@/data/postsInitialData";
 
-export const usePosts = () => {
+export const usePosts = (limit: number, start: number) => {
     const query = useQuery({
-        networkMode: 'always',
-        queryKey: ['posts'],
-        queryFn: getPosts
+        queryKey: ["posts", { limit, start }],
+        queryFn: () => getPosts(limit, start),
+        placeholderData: postsInitiaData
     });
     return query;
 }
