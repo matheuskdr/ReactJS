@@ -1,64 +1,33 @@
 "use client"
 
-import { SingUpForm } from "@/types/SingUpForm";
-import { Input } from "@mui/material";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 
 const Page = () => {
-  const {
-    control,
-    handleSubmit
-  } = useForm<SingUpForm>();
+  const { register, control } = useForm();
 
-  const handleFormSubmit: SubmitHandler<SingUpForm> = (data) => {
-    console.log(data);
+  const handleSucces = () => {
+    alert('Deu tudo certo!!');
+  }
+
+  const handleError = () => {
+    alert('Deu erro!!');
   }
 
   return (
     <div className="container mx-auto">
-      
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
 
-        <Controller
-          control={control}
-          name="name"
-          rules={{ required: true, minLength: 2, maxLength: 20 }}
-          render={( {field, fieldState} ) =>
-            <Input
-            {...field}
-            error={fieldState.invalid}
-            style={{ backgroundColor: '#FFF' }}
-          />}
-        />
+    <Form
+      control={control}
+      action={'https://jsonplaceholder.typicode.com/posts'}
+      onSuccess={handleSucces}
+      onError={handleError}
+    >
+      <input {...register('title', { required: true })} className="mr-3 border border-white p-3 text-black" />
+      <input {...register('body', { required: true })} className="mr-3 border border-white p-3 text-black" />
+      <input {...register('userId', { required: true })} className="border border-white p-3 text-black" />
 
-        <Controller
-          control={control}
-          name="lastName"
-          render={( {field, fieldState} ) =>
-            <Input
-            {...field}
-            error={fieldState.invalid}
-            style={{ backgroundColor: '#FFF' }}
-          />}
-        />
-
-        <Controller
-          control={control}
-          name="age"
-          rules={{ required: true, min: 18 }}
-          render={( {field, fieldState} ) =>
-            <Input
-            {...field}
-            error={fieldState.invalid}
-            style={{ backgroundColor: '#FFF' }}
-          />}
-        />
-
-
-
-        <input type="submit" value='Enviar' />
-
-      </form>
+      <button>Enviar</button>
+    </Form>
 
     </div>
   );
