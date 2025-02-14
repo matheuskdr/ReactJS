@@ -13,6 +13,6 @@ export const members: Member[] = [
         avatar: 'https://ui.shadcn.com/avatars/02.png',
         email: 'joao@gmail.com',
         name: 'João Gabriel',
-        role: 'member'
+        role: 'viewer'
     }
 ]

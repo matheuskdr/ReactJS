@@ -10,7 +10,7 @@ export const TeamArea = () => {
                     <CardTitle>Team Members</CardTitle>
                     <CardDescription>Invite your team members to collaborate.</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex flex-col gap-5">
                     {members.map(item => (
                         <TeamItem key={item.id} data={item} />
                     ))}
