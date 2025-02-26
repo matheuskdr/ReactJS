@@ -1,0 +1,1 @@
+export type CkeckoutSteps = 'user' | 'adress' | 'finish';
