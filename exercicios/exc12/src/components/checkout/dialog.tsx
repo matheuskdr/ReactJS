@@ -43,8 +43,8 @@ export const CheckoutDialog = ({ open, onOpenChange}: Props) => {
 
                 <div className="flex flex-col gap-3">
                     {step == 'user' && <StepUser setStep={setStep} />}
-                    {step == 'user' && <StepAdress setStep={setStep} />}
-                    {step == 'user' && <StepFinish />}
+                    {step == 'adress' && <StepAdress setStep={setStep} />}
+                    {step == 'finish' && <StepFinish />}
                 </div>
             </DialogContent>
         </Dialog>
